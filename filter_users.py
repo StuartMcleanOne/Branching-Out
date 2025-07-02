@@ -1,46 +1,58 @@
 import json
 
 
-def filter_users_by_name(name):
+def load_users():
+    """Load users from the local JSON file."""
     with open("users.json", "r") as file:
-        users = json.load(file)
-    filtered_users = [user for user in users if user["name"].lower() == name.lower()]
-    for user in filtered_users:
+        return json.load(file)
+
+
+def filter_by_name(name):
+    """Filter users by name (case-insensitive)."""
+    users = load_users()
+    matches = [user for user in users if user["name"].lower() == name.lower()]
+    for user in matches:
         print(user)
 
 
-def filter_users_by_age(min_age):
-    with open("users.json", "r") as file:
-        users = json.load(file)
-    filtered_users = [user for user in users if user["age"] >= min_age]
-    for user in filtered_users:
+def filter_by_age(min_age):
+    """Filter users by minimum age."""
+    users = load_users()
+    matches = [user for user in users if user["age"] >= min_age]
+    for user in matches:
         print(user)
 
-def filter_users_by_email(email):
-    with open("users.json", "r") as file:
-        users = json.load(file)
-    filtered_users = [user for user in users if user["email"].lower() == email.lower()]
-    for user in filtered_users:
+
+def filter_by_email(email):
+    """Filter users by email address (case-insensitive)."""
+    users = load_users()
+    matches = [user for user in users if user["email"].lower() == email.lower()]
+    for user in matches:
         print(user)
 
-if __name__ == "__main__":
-    filter_option = input("What would you like to filter by? (name, age, or email): ").strip().lower()
 
-    if filter_option == "name":
-        name_to_search = input("Enter a name to filter users: ").strip()
-        filter_users_by_name(name_to_search)
+def main():
+    """Prompt user and handle filtering logic."""
+    filter_type = input("What would you like to filter by? (name, age, or email): ").strip().lower()
 
-    elif filter_option == "age":
+    if filter_type == "name":
+        name = input("Enter a name to filter users: ").strip()
+        filter_by_name(name)
+
+    elif filter_type == "age":
         try:
-            min_age = int(input("Enter the minimum age to filter users: ").strip())
-            filter_users_by_age(min_age)
+            age = int(input("Enter the minimum age to filter users: ").strip())
+            filter_by_age(age)
         except ValueError:
-            print("Please enter a valid number for age.")
+            print(" Please enter a valid number for age.")
 
-    elif filter_option == "email":
-        email_to_search = input("Enter an email address to filter users: ").strip()
-        filter_users_by_email(email_to_search)
-        print("Filter by email initiated...")
+    elif filter_type == "email":
+        email = input("Enter an email address to filter users: ").strip()
+        filter_by_email(email)
 
     else:
-        print("Filtering by that option is not yet supported.")
+        print(" Filtering by that option is not supported.")
+
+
+if __name__ == "__main__":
+    main()
